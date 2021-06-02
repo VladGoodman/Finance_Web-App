@@ -1,0 +1,27 @@
+# FRONTENT
+vue_laravel-frontend/.DS_Store
+vue_laravel-frontend/node_modules
+vue_laravel-frontend/dist
+
+
+# local env files
+vue_laravel-frontend/.env.local
+vue_laravel-frontend/.env.*.local
+
+# Log files
+vue_laravel-frontend/npm-debug.log*
+vue_laravel-frontend/yarn-debug.log*
+vue_laravel-frontend/yarn-error.log*
+vue_laravel-frontend/pnpm-debug.log*
+
+# Editor directories and files
+vue_laravel-frontend/.idea
+vue_laravel-frontend/.vscode
+vue_laravel-frontend/*.suo
+vue_laravel-frontend/*.ntvs*
+vue_laravel-frontend/*.njsproj
+vue_laravel-frontend/*.sln
+vue_laravel-frontend/*.sw?
+
+#BACKEND
+
