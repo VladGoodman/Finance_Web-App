@@ -1,6 +1,6 @@
 <template>
   <div class="graft-content">
-    <b-loading v-model="loading" :can-cancel="true" :is-full-page="false"></b-loading>
+    <b-loading v-model="loading" :can-cancel="false" :is-full-page="false"></b-loading>
     <div class="graft-statistic">
       <div class="graft-statistic__line">
         <div class="statistic__line-title">
@@ -142,7 +142,6 @@ export default {
   }
   .graft-content{
     padding: 30px;
-
   }
   .statistic__line-title{
     background-color: #A8CCEE;

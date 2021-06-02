@@ -1,6 +1,6 @@
 <template>
   <div class="list-container">
-    <b-loading v-model="isLoading" :can-cancel="true" :is-full-page="false"></b-loading>
+    <b-loading v-model="isLoading" :can-cancel="false" :is-full-page="false"></b-loading>
     <div class="list__left">
       <div class="list__left-title">
         <div class="left-title__text">

@@ -2,17 +2,20 @@
   <div class="profile-container">
     <div class="header">
       <div class="header__logo">
-        App Name
+        Finans
       </div>
       <div class="header__right">
         <div class="header__right-score">
-          Состояние счета: {{score}}
+          Состояние счета:
+          <span id="right-score">
+            {{score}} ₽
+          </span>
         </div>
         <div class="header__right-username">
           {{username}}
         </div>
         <div class="header__right-logout">
-          <b-button type="is-warning" outlined @click="logout">
+          <b-button type="is-danger" outlined @click="logout">
             Выход
           </b-button>
         </div>
@@ -88,8 +91,16 @@ export default {
   }
   .header__logo{
     font-weight: bold;
+    color: white;
   }
   .header__right > *{
     padding: 0 10px;
+  }
+  #right-score{
+    color: #F86B4F;
+  }
+  .header__right-username{
+    text-decoration: underline;
+    text-transform: uppercase;
   }
 </style>

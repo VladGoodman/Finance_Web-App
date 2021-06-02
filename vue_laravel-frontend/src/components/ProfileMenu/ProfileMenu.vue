@@ -70,7 +70,6 @@ export default {
   }
   .menu-items__item{
     width: 100%;
-    padding: 10px 30px;
   }
   .menu-items__item{
    border-bottom: 5px solid #23263E;
@@ -79,6 +78,7 @@ export default {
     background: #282d57;
   }
   .menu-items__item-text{
+    padding: 10px 30px;
     font-size: 30px;
     color: #c9c9c9;
   }

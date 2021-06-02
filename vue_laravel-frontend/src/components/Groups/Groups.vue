@@ -1,5 +1,6 @@
 <template>
   <div class="container-list">
+    <b-loading  v-model="isLoading" :can-cancel="false" :is-full-page="false"></b-loading>
     <div class="groups__title">
       Группы
     </div>
@@ -7,7 +8,7 @@
       <b-tabs type="is-boxed">
         <b-tab-item>
           <template #header>
-            <span> Ваши группы </span>
+            <span> Группы </span>
           </template>
           <div v-if="groups.length === 0" class="groups__err">
             Список групп пуст
@@ -45,7 +46,8 @@ export default {
     return{
       groups: [],
       invites: [],
-      isCardModalActive: false
+      isCardModalActive: false,
+      isLoading: true
     }
   },
   created() {
@@ -59,6 +61,7 @@ export default {
             this.$store.dispatch('getAccountInvites')
                 .then(res => {
                   this.invites = res.data.info
+                  this.isLoading = false
                   console.log(this.groups)
                   console.log(this.invites)
                 })
