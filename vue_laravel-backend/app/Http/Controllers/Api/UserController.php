@@ -34,7 +34,6 @@ class UserController extends Controller
             'status'=>true,
             'user'=> $info,
             'changes'=>$changes
-//            'user_names' => $info[1]
         ], 200);
     }
 
@@ -118,6 +117,32 @@ class UserController extends Controller
         else{
             return response()->json([
                 'status'=> false,
+            ], 400);
+        }
+    }
+
+    public function searchUsers(Request $request){
+        $validator = Validator::make($request->all(), [
+            'username' => 'required',
+        ]);
+        if ($validator->fails()){
+            return response()->json([
+                'status'=> false,
+                'errors'=> $validator->errors()
+            ], 400);
+        }
+        $username = $request->username;
+        $users = User::where('name', 'LIKE','%'.$username.'%')->get(['id', 'name']);
+        if(count($users)){
+            return response()->json([
+                'status'=>true,
+                'users'=> $users
+            ], 200);
+        }
+        else{
+            return response()->json([
+                'status'=> false,
+                'errors'=> 'Ничего не найдено'
             ], 400);
         }
     }

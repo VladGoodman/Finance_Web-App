@@ -8,7 +8,7 @@
         <div class="header__right-score">
           Состояние счета:
           <span id="right-score">
-            {{score}} ₽
+            {{ score }} ₽
           </span>
         </div>
         <div class="header__right-username">
@@ -22,10 +22,11 @@
       </div>
     </div>
     <div class="menu">
-      <profile-menu></profile-menu>
+      <profile-menu>
+      </profile-menu>
     </div>
     <div class="content">
-        <router-view></router-view>
+        <router-view v-on:update_score="getScoreInfo"></router-view>
     </div>
   </div>
 </template>
@@ -43,18 +44,35 @@ export default {
     }
   },
   created(){
-    this.username = this.$store.getters.username
-    this.score = this.$store.getters.user_sum_change
+    this.getCreatedInfo()
   },
   methods:{
     async logout() {
       try {
         await this.$store.dispatch('logout')
-            .then(this.$router.push('/'));
+            .then(res => {
+              this.$router.push({name: 'Index'})
+            });
       } catch (error) {
         this.error = error;
       }
     },
+    getCreatedInfo(){
+      this.$store.dispatch('getAccountInfo').then(res => {
+        this.username = this.$store.getters.username
+        this.score = this.$store.getters.user_sum_change
+        this.$store.dispatch('converterCheck')
+      })
+    },
+    getScoreInfo(){
+      this.$store.dispatch('getAccountInfo')
+          .then(res => {
+            console.log('СЧЕТ ОБНОВЛЕН')
+            this.score = this.$store.getters.user_sum_change
+            console.log(this.score)
+            console.log(this.$store.getters.user_sum_change)
+          })
+      }
   }
 }
 </script>

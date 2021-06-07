@@ -12,16 +12,17 @@ export default new Vuex.Store({
         username: localStorage.getItem('username'),
         user_names: JSON.parse(localStorage.getItem('user_names')),
         converter_data: JSON.parse(localStorage.getItem('converter_data')),
-        user_sum_change: localStorage.getItem('user_sum_change')
+        user_sum_change: localStorage.getItem('user_sum_change'),
+        last_update_converter: localStorage.getItem('last_update_converter')
     },
     getters: {
         user: state => state.user,
         authenticated: state => state.user !== null,
         names: state => state.user_names,
         username: state => state.username,
-        user_changes: state => state.user_changes,
         converter_data: state => state.converter_data,
         user_sum_change: state => state.user_sum_change,
+        last_update_converter: state => state.last_update_converter,
     },
     mutations: {
         SET_USER(state, user) {
@@ -38,6 +39,7 @@ export default new Vuex.Store({
             console.log(info)
             state.username = info.user[0]
             state.user_names = info.user[1]
+            state.user_sum_change = info.sum_changes
             localStorage.setItem('username', info.user[0])
             localStorage.setItem('user_names', JSON.stringify(info.user[1]))
             localStorage.setItem('user_sum_change', info.sum_changes)
@@ -45,20 +47,23 @@ export default new Vuex.Store({
     },
     actions: {
         login({commit}, user) {
-            repository.createSession()
-                .then(res => {
-                    repository.login(user)
-                        .then((res) => {
-                            if (res.status === 201) {
-                                console.log('Login is true')
-                                commit('SET_USER', res.data)
-                            }
-                            console.log(res)
-                        })
-                        .catch((err) => {
-                            console.log('Login is false')
-                        })
-                })
+            return new Promise((resolve, reject) => {
+                repository.createSession()
+                    .then(res => {
+                        repository.login(user)
+                            .then((res) => {
+                                if (res.status === 201) {
+                                    console.log('Login is true')
+                                    commit('SET_USER', res.data)
+                                }
+                                resolve(res)
+                            })
+                            .catch((err) => {
+                                console.log('Login is false')
+                                reject(err)
+                            })
+                    })
+            })
         },
         getAccountInfo({commit}) {
             return new Promise((resolve, reject) => {
@@ -79,6 +84,7 @@ export default new Vuex.Store({
                     })
                     .catch((err) => {
                         console.log(err)
+                        reject(err)
                     })
             })
         },
@@ -151,6 +157,10 @@ export default new Vuex.Store({
             axios.get('https://www.cbr-xml-daily.ru/daily_json.js')
                 .then(res => {
                     localStorage.setItem('converter_data', JSON.stringify(res.data.Valute))
+                    let date_for_validate = new Date(res.data.PreviousDate)
+                    let date = ( date_for_validate.getDate() )+"."+ ( date_for_validate.getMonth()+1 )+"."+ ( date_for_validate.getFullYear() )
+                        + " " + ( date_for_validate.getHours() )+":" + ( date_for_validate.getMinutes() ) ;
+                    localStorage.setItem('last_update_converter', date)
                 })
         },
         getGroupAccount(){
@@ -207,6 +217,43 @@ export default new Vuex.Store({
                 }).catch(err => {
                     reject(err)
                 })
+            })
+        },
+        createGroup({commit}, name){
+            return new Promise((resolve, reject) => {
+                repository.createGroup(name)
+                    .then((res) => {
+                        console.log(res)
+                        resolve(res)
+                    })
+                    .catch((err) => {
+                        console.log(err)
+                        reject(err)
+                    })
+            })
+        },
+        searchUsers({commit}, username){
+            return new Promise((resolve, reject) => {
+                repository.searchUsers(username)
+                    .then((res) => {
+                        console.log(res)
+                        resolve(res)
+                    })
+                    .catch((err) => {
+                        console.log(err)
+                        reject(err)
+                    })
+            })
+        },
+        createInvite({commit}, params){
+            return new Promise((resolve, reject) => {
+                repository.createInvite(params)
+                    .then((res) => {
+                        resolve(res)
+                    })
+                    .catch((err) => {
+                        reject(err)
+                    })
             })
         }
     }

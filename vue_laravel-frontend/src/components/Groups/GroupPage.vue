@@ -9,7 +9,16 @@
         </div>
         <div class="group__info-container">
           <div class="info-container__creator">
-            Создатель группы: <span id="creator">{{group_info.creator_name}}</span>
+            <div class="container__creator-name">
+              Создатель группы: <span id="creator">{{group_info.creator_name}}</span>
+            </div>
+            <div class="container__creator-btn">
+              <b-button v-if="isCreator" rounded>
+                <router-link :to="{name: 'groupInvite'}">
+                  Пригласить пользователя
+                </router-link>
+              </b-button>
+            </div>
           </div>
           <div class="info-container__subscribers">
             <div class="subscribers__title">
@@ -33,6 +42,7 @@ export default {
     return{
       group_info: [],
       subs_info: [],
+      isCreator: false,
       isLoading: true,
       data_status: false
     }
@@ -43,6 +53,7 @@ export default {
           this.group_info = res.data.info.group_info
           this.subs_info = res.data.info.subs_info
           this.data_status = res.data.status
+          this.isCreator = res.data.info.group_info.creator_check
           this.isLoading = false
         })
     .catch(err => {
@@ -73,6 +84,9 @@ export default {
   }
   .info-container__creator{
     padding: 10px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     border-bottom: 1px solid #4E4E50;
   }
   #creator{

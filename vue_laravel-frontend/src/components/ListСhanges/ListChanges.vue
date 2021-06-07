@@ -8,6 +8,9 @@
         </div>
       </div>
       <div class="list__left-items">
+        <div v-if="list.length === 0" class="list__clear">
+          В списке измнений нет записей
+        </div>
         <list-changes-item v-on:update="getAccountData" v-for="l in list" :item="l">
         </list-changes-item>
       </div>
@@ -34,6 +37,9 @@ export default {
       score: 0
     }
   },
+  mounted() {
+    document.title = "Измнения | Finans"
+  },
   methods:{
     sortAccountData(mass){
       return mass.sort((a,b) =>{
@@ -47,6 +53,7 @@ export default {
           console.log(res.data)
           this.list = this.sortAccountData(res.data)
           this.isLoading = false
+          this.$emit('update_score')
         })
         .catch(err => console.log(err))
       console.log(this.list)
@@ -61,6 +68,7 @@ export default {
 
 <style scoped>
   .list-container{
+    position: relative;
     padding: 30px 30px;
     display: grid;
     grid-template-columns: 3fr 1fr;
@@ -80,12 +88,14 @@ export default {
     border-bottom: 4px solid #6E91B2;
     font-weight: normal;
     font-size: 24px;
-
-
     display: flex;
     align-items: center;
   }
   .list__left-items{
     margin-top: 50px;
+  }
+  .list__clear{
+    font-size: 30px;
+    margin-left: 30px;
   }
 </style>

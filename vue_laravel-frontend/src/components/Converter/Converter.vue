@@ -26,6 +26,9 @@
         {{result}}
       </div>
     </form>
+    <b-message v-if="loading" class="mass-conserver" title="Внимание" type="is-danger" has-icon aria-close-label="Close message">
+      Последнее обновление информации о курсе: {{ last_update }}
+    </b-message>
   </div>
 </template>
 
@@ -38,18 +41,25 @@ export default {
       result:null,
       selected: ['RUB', 'USD'],
       input: 0,
-      countries: []
+      countries: [],
+      last_update: "None",
+      loading: false
     }
   },
   created() {
     this.converter_data = this.$store.getters.converter_data
     this.setAllInfo()
   },
+  mounted() {
+    document.title = "Конвертация | Finans"
+  },
   methods:{
     setAllInfo(){
       for(let item in this.converter_data){
         this.countries.push(item)
       }
+      this.last_update = this.$store.getters.last_update_converter
+      this.loading = true
     },
     convert(){
       let defaultValute = {
@@ -125,5 +135,13 @@ export default {
     font-weight: bold;
     margin-bottom: 10px;
     font-size: 20px;
+  }
+  .converter__lastdate{
+    font-size: 12px;
+  }
+  .mass-conserver{
+    position: fixed;
+    bottom: 0;
+    right: 0;
   }
 </style>

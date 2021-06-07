@@ -1,31 +1,25 @@
 <template>
   <div class="form">
     <div class="form-title">
-      authorization
+      Авторизация
     </div>
     <div class="form-body">
       <form v-on:submit.prevent="login">
         <div class="form-body__input">
           <label for="login-email">Email</label>
-          <input v-model="form.email" type="email" id="login-email" name="login-email">
+          <input v-model="form.email"  type="email" id="login-email" name="login-email" required>
         </div>
         <div class="form-body__input">
-          <label for="login-password">Password</label>
-          <input v-model="form.password" type="password" id="login-password" name="login-password">
+          <label for="login-password">Пароль</label>
+          <input v-model="form.password" type="password" id="login-password" name="login-password" required>
         </div>
-        <div class="form-body__danger">
+        <div class="form-body__err">
           {{ errors }}
         </div>
         <button class="form-body__btn">
-          Login
+          Войти
         </button>
       </form>
-
-    </div>
-    <div class="form-social">
-      <div class="form-social__item">
-        <img src="" alt="">
-      </div>
     </div>
   </div>
 </template>
@@ -40,7 +34,7 @@ export default {
         email: '',
         password: ''
       },
-      errors: { }
+      errors: ' '
     }
   },
   computed:{
@@ -53,11 +47,13 @@ export default {
       this.errors = null;
         this.$store.dispatch('login', this.form)
           .then(res=>{
+            console.log(res);
             this.$router.push({name: 'profileIndex'});
           })
           .catch(err=> {
-            console.log(err);
-            this.errors = err.response.data.errors
+            if (err.data.status === false){
+              this.errors = 'Неправильный логин или пароль'
+            }
           });
     },
 
@@ -70,7 +66,7 @@ export default {
     color: white;
     background-color: #40467C;
     border-radius: 40px;
-    padding: 64px 44px;
+    padding: 30px 44px;
     width: 520px;
 
     &-title {
@@ -81,21 +77,22 @@ export default {
     }
     &-body {
       &__input {
-        margin: 15px 0;
         font-size: 18px;
         display: flex;
         flex-direction: column;
+        margin: 28px 0;
         label {
           display: block;
-          font-size: 18px;
+          font-size: 16px;
         }
         input {
           margin: 0;
+          color: white;
           display: block;
           border: 3px white solid;
           border-radius: 6px;
           background: none;
-          padding: 23px 17px;
+          padding: 10px 17px;
         }
       }
       &__btn{

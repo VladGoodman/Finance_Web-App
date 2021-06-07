@@ -40,7 +40,7 @@ class GroupController extends Controller
         $group_info = DB::table('groups')
             ->where('groups.id', $request->group_id)
             ->join('users', 'users.id', '=', 'groups.creator_id')
-            ->select('groups.name as group_name', 'groups.id as group_id', 'users.name as creator_name')
+            ->select('groups.name as group_name', 'groups.id as group_id', 'users.name as creator_name','users.id as creator_check')
             ->first();
         if($group_info){
             $subscribers_info = DB::table('group_participations')
@@ -54,10 +54,17 @@ class GroupController extends Controller
                 'errors'=> 'Группа не найдена'
             ], 400);
         }
-
+        if($user->id === $group_info->creator_check){
+            $group_info->creator_check= true;
+        }else{
+            $group_info->creator_check= false;
+        }
         return response()->json([
             'status'=>true,
-            'info'=> ['group_info'=>$group_info, 'subs_info'=>$subscribers_info]
+            'info'=> [
+                'group_info'=>$group_info,
+                 'subs_info'=>$subscribers_info
+                ]
         ], 200);
     }
 

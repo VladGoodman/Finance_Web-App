@@ -45,5 +45,14 @@ export default {
   },
   getGroupInfo(params) {
     return api.get('http://127.0.0.1:8000/api/group', {params});
+  },
+  createGroup(name){
+    return api.post('http://127.0.0.1:8000/api/groups/create', {name: name});
+  },
+  searchUsers(username){
+    return api.post('http://127.0.0.1:8000/api/user/search', {username: username});
+  },
+  createInvite(params){
+    return api.post('http://127.0.0.1:8000/api/invite/create', {recipient_id: params.user_id, group_id: params.group_id});
   }
 }

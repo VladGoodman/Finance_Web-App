@@ -50,8 +50,7 @@ class AuthController extends Controller
         if(!$user || !Hash::check($request->password, $user->password)) {
             return response()->json(
             [
-                'status'=>false,
-                'errors'=>'Wrong login or password'
+                'status'=>false
             ], 400);
         }
         $token = $user->createToken('myapptoken')->plainTextToken;

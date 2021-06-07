@@ -1,42 +1,35 @@
 <template>
   <div class="form">
     <div class="form-title">
-      registration
+      Регистрация
     </div>
     <div class="form-body">
       <form v-on:submit.prevent="register">
         <div class="form-body__input">
-          <label for="register-name">Username</label>
-          <input v-model="form.username" type="text" id="register-name" >
+          <label for="register-name">Имя пользователя</label>
+          <input v-model="form.username" type="text" id="register-name" required>
         </div>
         <div class="form-body__input">
           <label for="register-email">Email</label>
-          <input v-model="form.email" type="email" id="register-email" >
+          <input v-model="form.email" type="email" id="register-email" required>
         </div>
         <div class="form-body__input">
-          <label for="register-password">Password</label>
-          <input v-model="form.password" type="password" id="register-password" >
+          <label for="register-password">Пароль</label>
+          <input v-model="form.password" type="password" id="register-password" required>
         </div>
         <div class="form-body__input">
-          <label for="register-repeat_password">Repeat Password</label>
-          <input v-model="form.repeat_password" type="password" id="register-repeat_password" >
+          <label for="register-repeat_password">Повторите пароль</label>
+          <input v-model="form.repeat_password" type="password" id="register-repeat_password" required>
         </div>
-        <div class="form-body__danger">
+        <div class="form-body__errors">
           {{errors}}
         </div>
-        <div class="form-body__success">
-          {{ success }}
-        </div>
         <button class="form-body__btn">
-          Register
+          Зарегистрироваться
         </button>
       </form>
     </div>
-    <div class="form-social">
-      <div class="form-social__item">
-        <img src="" alt="">
-      </div>
-    </div>
+
   </div>
 </template>
 
@@ -50,7 +43,7 @@ export default {
         password: '',
         repeat_password: '',
       },
-      errors: {},
+      errors: '',
       success: null
     }
   },
@@ -72,15 +65,17 @@ export default {
           password: this.form.password
         })
           .then(res=>{
-            console.log(res)
-            this.$router.push({name: 'profileIndex'});
+            this.$router.push({name: "profileIndex"})
           })
           .catch(err=> {
-            console.log(err.response.data.errors);
-            this.errors = err.response.data.errors
+            if(err.data.errors.email[0]){
+              if(err.data.errors.email[0] === "The email has already been taken."){
+                this.errors = 'Эта почта уже занята'
+              }
+            }
           });
       }else{
-        this.errors = 'Password mismatch'
+        this.errors = 'Пароли не совпадают'
       }
     }
   }
@@ -88,36 +83,40 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.form-body__input{
+  height: 50px;
+}
 .form {
   color: white;
   background-color: #40467C;
   border-radius: 40px;
-  padding: 64px 44px;
-  width: 520px;
+  padding: 30px 44px;
+  width: 450px;
 
   &-title {
     text-transform: uppercase;
     text-align: center;
     font-size: 36px;
-    margin-bottom: 45px;
+    margin-bottom: 20px;
   }
   &-body {
     &__input {
-      margin: 15px 0;
       font-size: 18px;
       display: flex;
       flex-direction: column;
+      margin: 28px 0;
       label {
         display: block;
-        font-size: 18px;
+        font-size: 16px;
       }
       input {
         margin: 0;
+        color: white;
         display: block;
         border: 3px white solid;
         border-radius: 6px;
         background: none;
-        padding: 23px 17px;
+        padding: 10px 17px;
       }
     }
     &__btn{

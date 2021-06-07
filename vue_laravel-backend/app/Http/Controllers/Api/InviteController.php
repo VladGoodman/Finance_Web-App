@@ -67,11 +67,7 @@ class InviteController extends Controller
         $user = $this->getUser($request);
         $invites = DB::table('invites')
             ->join('users', 'users.id', '=', 'invites.creator_id')
-            ->where('invites.recipient_id', '=', $request->recipient_id)
-            ->orWhere('invites.creator_id', '=', $user->id)
-            ->orWhere('invites.recipient_id', '=', $user->id)
-            ->orWhere('invites.creator_id', '=', $request->recipient_id)
-
+            ->where('invites.recipient_id', '=', $user->id)
             ->join('groups', 'invites.group_id', '=', 'groups.id')
             ->select('invites.id as invite_id','users.name as creator', 'groups.name as group_name')
             ->get();

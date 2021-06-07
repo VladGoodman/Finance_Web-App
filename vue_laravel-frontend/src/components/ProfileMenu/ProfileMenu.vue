@@ -41,6 +41,7 @@ import ProfileMenuScore from "./ProfileMenuScore";
 
 export default {
   name: 'ProfileMenu',
+  props: ['score'],
   components: {ProfileMenuScore},
   comments: ProfileMenuScore,
   data() {

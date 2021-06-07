@@ -20,6 +20,7 @@ Route::middleware('auth:sanctum')->get('/user/changes/replenishments', [UserCont
 Route::middleware('auth:sanctum')->get('/user/changes/invoice', [UserController::class, 'getInvoiceChangeAccount']);
 Route::middleware('auth:sanctum')->post('/user/changes/create', [UserController::class, 'createChangeAccount']);
 Route::middleware('auth:sanctum')->post('/user/changes/delete', [UserController::class, 'deleteAccountChange']);
+Route::middleware('auth:sanctum')->post('/user/search', [UserController::class, 'searchUsers']);
 
 Route::middleware('auth:sanctum')->get('/user/names', [UserController::class, 'getAccountNames']);
 // GROUPS

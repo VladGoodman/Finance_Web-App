@@ -1,6 +1,18 @@
 <template>
   <div class="container-list">
     <b-loading  v-model="isLoading" :can-cancel="false" :is-full-page="false"></b-loading>
+    <b-modal
+        v-model="isComponentModalActive"
+        has-modal-card
+        trap-focus
+        :destroy-on-hide="false"
+        aria-role="dialog"
+        aria-label="Example Modal"
+        aria-modal>
+      <template #default="props">
+        <modal-create @close="props.close"></modal-create>
+      </template>
+    </b-modal>
     <div class="groups__title">
       Группы
     </div>
@@ -10,6 +22,15 @@
           <template #header>
             <span> Группы </span>
           </template>
+          <div class="create__group">
+            <div class="create__group-btn">
+              <b-button
+                  label="Создать группу"
+                  type="is-link is-light"
+                  size="is-medium"
+                  @click="isComponentModalActive = true" />
+            </div>
+          </div>
           <div v-if="groups.length === 0" class="groups__err">
             Список групп пуст
           </div>
@@ -37,21 +58,26 @@
 <script>
 import GroupItem from "./GroupItem";
 import InviteItem from "./InviteItem";
+import ModalCreate from "./ModalCreate";
 
 export default {
   name: "Groups",
-  components: {InviteItem, GroupItem},
+  components: {InviteItem, GroupItem, ModalCreate},
   comments: [GroupItem,InviteItem],
   data(){
     return{
       groups: [],
       invites: [],
       isCardModalActive: false,
-      isLoading: true
+      isLoading: true,
+      isComponentModalActive: false
     }
   },
   created() {
     this.getAccountGroups()
+  },
+  mounted() {
+    document.title = "Группы | Finans"
   },
   methods:{
     getAccountGroups(){
@@ -74,6 +100,7 @@ export default {
 <style>
   .container-list{
     padding: 30px;
+    position: relative;
   }
   .container-list .tabs.is-boxed li.is-active a{
     background: transparent !important;
@@ -103,5 +130,8 @@ export default {
   .groups__content{
     background-color: white;
     min-height: 200px;
+  }
+  .create__group-btn{
+    text-align: right;
   }
 </style>

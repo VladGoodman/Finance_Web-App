@@ -4,7 +4,7 @@
     <div class="graft-statistic">
       <div class="graft-statistic__line">
         <div class="statistic__line-title">
-          Статистика за всё время
+          Статистика за последнее время
         </div>
         <line-chart class="statistic__line-body"  v-if="!loading" :info="line_graf_info"/>
       </div>
@@ -12,18 +12,30 @@
         <div class="statistic__expenses-title">
           Пополнения
         </div>
-        <pie-chart class="small" v-if="!loading" :info="pie_expenses_graf_info"/>
-        <div class="statistic__expenses-sum">
-          Всего: {{ formatted_expenses_sum }}
+        <div v-if="pie_expenses_graf_info.data.length !== 0" class="statistic__expenses-body">
+          <pie-chart class="small" v-if="!loading" :info="pie_expenses_graf_info"/>
+          <div class="statistic__expenses-sum">
+            Всего: {{ formatted_expenses_sum }}
+          </div>
+        </div>
+        <div v-else class="graf__clear">
+          Нет записей для этого графика
         </div>
       </div>
       <div class="graft-statistic__replenishment">
         <div class="statistic__replenishment-title">
           Затраты
         </div>
-        <pie-chart class="small" v-if="!loading" :info="pie_replenishment_graf_info"/>
-        <div class="statistic__replenishment-sum">
-          Всего: {{ formatted_replenishment_sum }}
+        <div v-if="pie_replenishment_graf_info.data.length !== 0" class="statistic__replenishment-body">
+          <div class="statistic__replenishment-graf">
+            <pie-chart class="small" v-if="!loading" :info="pie_replenishment_graf_info"/>
+          </div>
+          <div class="statistic__replenishment-sum">
+            Всего: {{ formatted_replenishment_sum }}
+          </div>
+        </div>
+        <div v-else class="graf__clear">
+          Нет записей для этого графика
         </div>
       </div>
     </div>
@@ -67,6 +79,9 @@ export default {
     formatted_expenses_sum() {
       return String(this.pie_expenses_graf_info.sum).replace(/(\d)(?=(\d{3})+([^\d]|$))/g, '$1.') + " ₽";
     },
+  },
+  mounted() {
+    document.title = "Статистика | Finans"
   },
   methods:{
     getContentForChart(){
@@ -141,6 +156,7 @@ export default {
     color: white;
   }
   .graft-content{
+    position: relative;
     padding: 30px;
   }
   .statistic__line-title{
@@ -168,6 +184,9 @@ export default {
   }
   .statistic__line-body > *{
     color: #4E4E50 !important;
-
+  }
+  .graf__clear{
+    font-size: 20px;
+    text-transform: none;
   }
 </style>

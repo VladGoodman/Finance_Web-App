@@ -39,7 +39,8 @@ export default {
             console.log(res)
           })
     }
-  }
+  },
+
 }
 </script>
 
@@ -47,6 +48,7 @@ export default {
   .container{
     border: 1px solid #242B35;
     padding: 10px;
+    margin: 10px 0;
   }
   .invite__name{
     color: #242B35;

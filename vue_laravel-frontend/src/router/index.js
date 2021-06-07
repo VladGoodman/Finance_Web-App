@@ -11,7 +11,7 @@ import TimeStatistics from '../components/TimeStatistics/TimeStatistics'
 import Converter from "../components/Converter/Converter";
 import Groups from "../components/Groups/Groups";
 import GroupPage from "../components/Groups/GroupPage";
-
+import SearchUsers from "../components/Groups/SearchUsers/SearchUsers";
 
 Vue.use(VueRouter)
 
@@ -62,7 +62,12 @@ const routes = [
       {
         path: 'groups/:id',
         name: 'group',
-        component: GroupPage
+        component: GroupPage,
+      },
+      {
+        path: 'groups/:id/invite',
+        name: 'groupInvite',
+        component: SearchUsers,
       }
     ]
   }
